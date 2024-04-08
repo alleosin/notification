@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+  </head>
+  <body>
+    <div id="header">
+      <span class="logo">Zakładki</span>
+      {% if request.user.is_authenticated %}
+          <ul class="menu">
+              <li>
+                <a href="{% url 'dashboard' %}">Moj dashboard</a>
+              </li>
+              <li>
+                <a href="#">Vidarysy</a>
+              </li>
+              <li>
+                <a href="#">Ludzi</a>
+              </li>
+          </ul>
+      {% endif %}
+      <span class="user">
+        {% if request.user.is_authenticated %}
+            Vitajem, {{ request.user.first_name }}!
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Vyjści</button>
+            </form>
+        {% else %}
+            <form action="{% url 'login' %}">
+                {% csrf_token %}
+                <button type="submit">Uvajści</button>
+            </form>
+        {% endif %}
+      </span>
+    </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">
+                    {{ message|safe }}
+                    <a href="#" class="close">✖</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div id="content">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </body>
+</html>

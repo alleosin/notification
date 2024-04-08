@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Stvaryć ulikovy zapis{% endblock %}
+
+{% block content %}
+    <h1>Stvaryć ulikovy zapis</h1>
+    <p>Kali łaska, zarehistrujciesia, skarystaŭšysia nastupnaj formaj:</p>
+    <form action="." method="post">
+        {{ user_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Stvaryć ulikovy zapis"></p>
+    </form>
+{% endblock %}

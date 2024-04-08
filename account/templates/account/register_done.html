@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block title %}Vitajem!{% endblock %}
+
+{% block content %}
+    <h1>Vitajem, {{ new_user.first_name }}!</h1>
+    <p>Vaš ulukovy zapis paśpiachova stvorany. My možacie <a href="{% url 'login' %}">ŭvajści</a>.</p>
+{% endblock %}

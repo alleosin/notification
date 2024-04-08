@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Redahavańnie ŭlikovaha zapisu{% endblock %}
+
+{% block content %}
+    <h1>Redahavańnie ŭlikovaha zapisu</h1>
+    <p>Vy možacie adrehavać vaš ulikovy zapis, skarystaŭšysia nastupnaj formaj:</p>
+    <form action="." method="post">
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Zachavać źmieny"></p>
+    </form>
+{% endblock %}

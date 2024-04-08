@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Uvachod{% endblock %}
+{% block content %}
+    <h1>Uvachod</h1>
+    <p>Kali łaska, skarystajciesia nastupnaj formaj dla ŭvachodu:</p>
+    <form action="." method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Uvajści"></p>
+    </form>
+{% endblock %}
