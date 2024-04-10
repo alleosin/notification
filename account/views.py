@@ -1,29 +1,8 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
-from .models import Profile
+from .forms import UserRegistrationForm, UserEditForm, ProfileEditForm, NotificationSendForm
+from .models import Profile, Notification
 from django.contrib import messages
-
-# Create your views here.
-def user_login(request):
-    if request.method == "POST":
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            user = authenticate(username=cd["username"], password=cd["password"])
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return HttpResponse("Paśpaiachovy ŭvachod")
-                else:
-                    return HttpResponse("Adklučany akaŭnt")
-            else:
-                return HttpResponse("Niasłušny login")
-    else:
-        form = LoginForm()
-    return render(request, "account/login.html", {"form": form})
 
 @login_required
 def dashboard(request):
@@ -62,3 +41,24 @@ def edit(request):
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)
         return render(request, "account/edit.html", {"user_form": user_form, "profile_form": profile_form})
+
+def user_page(request, username):
+    owner = get_object_or_404(Profile, user=username)
+    if request.user == owner.user:
+        notifications = Notification.objects.filter(addressee = owner).order_by("-created_date")
+        context = {
+            "owner": owner,
+            "notifications": notifications,
+        }
+        return render(request, "account/user_page.html", context)
+    elif request.method == "POST":
+        notification_form = NotificationSendForm(data=request.POST)
+        if notification_form.is_valid():
+            new_notification = notification_form.save(commit=False)
+            if new_notification.sender == "":
+                new_notification.sender = "Ananim"
+            new_notification.addressee = owner
+            new_notification.save()
+    else:
+        notification_form = NotificationSendForm()
+    return render(request, "account/notification.html", {"owner": owner, "notification_form": notification_form,})

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}{{ owner }}{% endblock %}
+
+{% block content %}
+    <h1>{{ owner }}</h1>
+    {% for notification in notifications %}
+        <p>{{ notification.sender }} - {{ notification.endowment }}$</p>
+        <p>{{ notification.created_date }}</p>
+        <p>{{ notification.text }}</p>
+    {% endfor %}
+{% endblock %}

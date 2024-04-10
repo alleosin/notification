@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ owner }}{% endblock %}
+
+{% block content %}
+    <h1>Tip</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="notification-form">
+            <p>
+                <input type="text" name="sender" placeholder="Juzernejm" maxlength="20">
+            </p>
+            <p>
+                <label>Endowment $
+                <input type="number" placeholder="Hrašovaja suma" required name="endowment" min="0.01" value="5" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$" ></label>
+            </p>
+            <p>
+                <textarea name="text" cols="40", rows="10" style="height: 220px; width:842px;" placeholder="Vaša paviedamleńnie"></textarea>
+            </p>
+        </div>
+        <p><input type="submit" value="Dasłać"></p>
+    </form>
+{% endblock %}
